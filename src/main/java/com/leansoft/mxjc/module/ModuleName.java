@@ -4,6 +4,7 @@ public enum ModuleName {
 
 	NANO("nano"),  // android java
 	MICRO("micro"), // php
+	SOA("soa"),		// soa objective-c
 	PICO("pico");  // ios objective-c
 	
 	private final String name;

@@ -9,9 +9,10 @@ package com.leansoft.mxjc.model;
 public class CGConfig {
 	
 	public String picoPrefix;
+	public String soaPrefix;
 	
 	public String picoServiceGroup;
-	
+	public String soaServiceGroup;
 	public boolean nanoPrivateField;
 	
 	// for demo
