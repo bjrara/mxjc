@@ -1,6 +1,5 @@
 package com.ctriposs.soa.module;
 
-import java.io.File;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +14,7 @@ import com.leansoft.mxjc.model.TypeInfo;
 import com.leansoft.mxjc.module.AbstractClientModule;
 import com.leansoft.mxjc.module.ModuleName;
 import com.leansoft.mxjc.module.XjcModuleException;
-import com.leansoft.mxjc.module.pico.PicoClientModule;
+import com.leansoft.mxjc.module.pico.PicoType;
 import com.leansoft.mxjc.util.ClassNameUtil;
 
 import freemarker.template.SimpleHash;
@@ -25,7 +24,8 @@ public class SoaClientModule extends AbstractClientModule {
 	private URL clzImplTempalte;
 	private URL enumDeclarationTemplate;
 	private URL enumDefinitionTemplate;
-	private URL commonHeaderTemplate;
+
+//	private URL commonHeaderTemplate;
 
 	@Override
 	public ModuleName getName() {
@@ -44,7 +44,7 @@ public class SoaClientModule extends AbstractClientModule {
 		clzImplTempalte = this.getTemplateURL("client-class-implementation.fmt");
 		enumDeclarationTemplate = this.getTemplateURL("client-enum-declaration.fmt");
 		enumDefinitionTemplate = this.getTemplateURL("client-enum-definition.fmt");
-		commonHeaderTemplate = this.getTemplateURL("client-common-header.fmt");
+//		commonHeaderTemplate = this.getTemplateURL("client-common-header.fmt");
 	}
 
 	@Override
@@ -119,22 +119,29 @@ public class SoaClientModule extends AbstractClientModule {
 	private void convertFieldsType(ClassInfo classInfo) {
 		for (FieldInfo field : classInfo.getFields()) {
 			TypeInfo fieldType = field.getType();
-			//TODO unfinished implementation
 			convertType(fieldType);
-			//TODO should element type of array be converted?
 			for (TypeInfo paramType : fieldType.getTypeParameters()) {
 				convertType(paramType);
 			}
 		}
-
 	}
 
-	//TODO unfinished implementation
 	private void convertType(TypeInfo fieldType) {
-		if (fieldType == null) {
-
+		if (fieldType == null)
+			return;
+		String primitiveType = OCTypeMapper.lookupWrapper(fieldType.getFullName());
+		if (primitiveType != null) {
+			fieldType.setFullName(OCTypeMapper.lookupWrapper(primitiveType));
+			fieldType.setName(primitiveType);
+			fieldType.setPrimitive(true);
+			return;
+		} else if (fieldType.isEnum()) {
+			fieldType.setName(PicoType.ENUM);
+			fieldType.setPrimitive(true);
+			return;
 		}
-
+		//TODO add fieldtype name
+		fieldType.setPrimitive(false);
 	}
 
 	private void prefixType(CGModel cgModel, String prefix) {
@@ -174,7 +181,9 @@ public class SoaClientModule extends AbstractClientModule {
 	private void prefixType(TypeInfo type, String prefix) {
 		if (type == null)
 			return;
-		//TODO don't prefix primitive type
+		if (OCTypeMapper.lookupWrapper(type.getFullName()) != null) {
+			return;
+		}
 		String name = type.getName();
 		type.setName(prefix + name);
 		type.setFullName(prefix + name);
