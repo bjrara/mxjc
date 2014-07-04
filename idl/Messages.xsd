@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Messages"
+    targetNamespace="http://soa.ctrip.com/framework/soa/testservice/v1"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    xmlns="http://soa.ctrip.com/framework/soa/testservice/v1"
+    xmlns:ns="http://soa.ctrip.com/framework/soa/testservice/v1"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:common="http://soa.ctrip.com/common/types/v1"
+    xmlns:mobileCommon="http://soa.ctrip.com/mobile/common/types/v1"
+>
+  
+  <xs:import id="SOACommonTypes" schemaLocation="CTripSOACommonTypes_V1.0.0.xsd"
+           namespace="http://soa.ctrip.com/common/types/v1"></xs:import>
+  <xs:import id="SOAMobileCommonTypes" schemaLocation="CTripSOAMobileCommonTypes_V1.0.0.xsd"
+           namespace="http://soa.ctrip.com/mobile/common/types/v1"></xs:import>
+  <xs:include id="Types" schemaLocation="Types.xsd"></xs:include>
+
+  <xs:element name="GetItemsRequest" type="ns:GetItemsRequestType"/>
+  <xs:complexType name="GetItemsRequestType">
+    <xs:sequence>
+      <xs:element name="Take" type="xs:int" />
+      <xs:element name="Sleep" type="xs:int" />
+      <xs:element name="ValidationString" type="xs:string" />
+      <xs:element name="GenerateRandomException" type="xs:boolean" />
+      <xs:element name="ReturnWrappedErrorResponse" type="xs:boolean" />
+      <xs:element name="head" type="mobileCommon:MobileRequestHead" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="GetItemsResponse" type="ns:GetItemsResponseType"/>
+  <xs:complexType name="GetItemsResponseType">
+    <xs:sequence>
+      <xs:element name="ResponseStatus" type="common:ResponseStatusType"/>
+      <xs:element name="Items" type="Item" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

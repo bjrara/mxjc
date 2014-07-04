@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Types"
+    targetNamespace="http://soa.ctrip.com/framework/soa/testservice/v1"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    xmlns="http://soa.ctrip.com/framework/soa/testservice/v1"
+    xmlns:ns="http://soa.ctrip.com/framework/soa/testservice/v1"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  
+  <xs:complexType name="Item">
+    <xs:sequence>
+      <xs:element name="itemId" type="xs:string" maxOccurs="1" minOccurs="1"></xs:element>
+      <xs:element name="title" type="xs:string" maxOccurs="1" minOccurs="1"></xs:element>
+      <xs:element name="globalId" type="xs:token" minOccurs="0"></xs:element>
+      <xs:element name="subtitle" type="xs:string" minOccurs="0"></xs:element>
+      <xs:element name="primaryCategory" type="Category" minOccurs="0"></xs:element>
+      <xs:element name="secondaryCategory" type="Category" minOccurs="0"></xs:element>
+      <xs:element minOccurs="0" name="galleryURL" type="xs:anyURI"></xs:element>
+      <xs:element minOccurs="0" name="galleryInfoContainer" type="GalleryInfoContainer"></xs:element>
+      <xs:element minOccurs="0" name="viewItemURL" type="xs:anyURI"></xs:element>
+      <xs:element minOccurs="0" name="charityId" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="productId" type="ProductId"></xs:element>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="paymentMethod" type="xs:token"></xs:element>
+      <xs:element minOccurs="0" name="autoPay" type="xs:boolean"></xs:element>
+      <xs:element minOccurs="0" name="postalCode" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="location" type="xs:string"></xs:element>
+      <xs:element minOccurs="0" name="country" type="xs:token"></xs:element>
+      <xs:element minOccurs="0" name="storeInfo" type="Storefront"></xs:element>
+      <xs:element minOccurs="0" name="sellerInfo" type="SellerInfo"></xs:element>
+      <xs:element minOccurs="0" name="shippingInfo" type="ShippingInfo"></xs:element>
+      <xs:element minOccurs="0" name="sellingStatus" type="SellingStatus"></xs:element>
+      <xs:element minOccurs="0" name="listingInfo" type="ListingInfo"></xs:element>
+      <xs:element minOccurs="0" name="returnsAccepted" type="xs:boolean"></xs:element>
+      <xs:element name="galleryPlusPictureURL" type="xs:anyURI" maxOccurs="unbounded" minOccurs="0"></xs:element>
+      <xs:element name="compatibility" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+      <xs:element name="distance" type="Distance" minOccurs="0"></xs:element>
+      <xs:element name="condition" type="Condition" maxOccurs="1" minOccurs="0"></xs:element>
+      <xs:element name="isMultiVariationListing" type="xs:boolean" minOccurs="0"></xs:element>
+      <xs:element name="discountPriceInfo" type="DiscountPriceInfo" minOccurs="0"></xs:element>
+      <xs:element name="pictureURLSuperSize" type="xs:anyURI" minOccurs="0"></xs:element>
+      <xs:element name="pictureURLLarge" type="xs:anyURI" minOccurs="0"></xs:element>
+      <xs:element name="unitPrice" type="UnitPriceInfo" minOccurs="0"></xs:element>
+      <xs:element name="topRatedListing" type="xs:boolean" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ItemContainer">
+    <xs:sequence>
+      <xs:element name="Count" type="xs:int"></xs:element>
+      <xs:element name="item" type="Item" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Category">
+    <xs:sequence>
+      <xs:element name="categoryId" type="xs:string" minOccurs="0"></xs:element>
+      <xs:element name="categoryName" type="xs:string" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GalleryInfoContainer">
+    <xs:sequence>
+      <xs:element name="galleryURL" type="GalleryURL" maxOccurs="3" minOccurs="1"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GalleryURL">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attribute name="gallerySize" type="GallerySizeEnum" use="required"></xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:simpleType name="GallerySizeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Small"></xs:enumeration>
+      <xs:enumeration value="Medium"></xs:enumeration>
+      <xs:enumeration value="Large"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="ProductId">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="type" type="xs:string" use="required"></xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Storefront">
+    <xs:sequence>
+      <xs:element name="storeName" type="xs:string" minOccurs="0"></xs:element>
+      <xs:element name="storeURL" type="xs:anyURI" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SellerInfo">
+    <xs:sequence>
+      <xs:element name="sellerUserName" type="xs:string" minOccurs="0"></xs:element>
+      <xs:element name="feedbackScore" type="xs:long" minOccurs="0"></xs:element>
+      <xs:element name="positiveFeedbackPercent" type="xs:double" minOccurs="0"></xs:element>
+      <xs:element name="feedbackRatingStar" type="xs:token" maxOccurs="1" minOccurs="0"></xs:element>
+      <xs:element name="topRatedSeller" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ShippingInfo">
+    <xs:sequence>
+      <xs:element name="shippingServiceCost" type="Amount" minOccurs="0"></xs:element>
+      <xs:element name="shippingType" type="xs:token" minOccurs="0"></xs:element>
+      <xs:element name="shipToLocations" type="xs:string" maxOccurs="unbounded" minOccurs="0"></xs:element>
+      <xs:element name="expeditedShipping" type="xs:boolean" minOccurs="0"></xs:element>
+      <xs:element name="oneDayShippingAvailable" type="xs:boolean" minOccurs="0"></xs:element>
+      <xs:element name="handlingTime" type="xs:int" minOccurs="0"></xs:element>
+      <xs:element name="intermediatedShipping" type="xs:boolean" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Amount">
+    <xs:simpleContent>
+      <xs:extension base="xs:double">
+        <xs:attribute name="currencyId" type="xs:string" use="required"></xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="SellingStatus">
+    <xs:sequence>
+      <xs:element name="currentPrice" type="Amount" minOccurs="0"></xs:element>
+      <xs:element name="convertedCurrentPrice" type="Amount" minOccurs="0"></xs:element>
+      <xs:element name="bidCount" type="xs:int" minOccurs="0"></xs:element>
+      <xs:element name="sellingState" type="xs:token" minOccurs="0"></xs:element>
+      <xs:element name="timeLeft" type="xs:duration" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListingInfo">
+    <xs:sequence>
+      <xs:element name="bestOfferEnabled" type="xs:boolean" minOccurs="0"></xs:element>
+      <xs:element name="buyItNowAvailable" type="xs:boolean" minOccurs="0"></xs:element>
+      <xs:element name="buyItNowPrice" type="Amount" minOccurs="0"></xs:element>
+      <xs:element name="convertedBuyItNowPrice" type="Amount" minOccurs="0"></xs:element>
+      <xs:element name="startTime" type="xs:dateTime" minOccurs="0"></xs:element>
+      <xs:element name="endTime" type="xs:dateTime" minOccurs="0"></xs:element>
+      <xs:element name="listingType" type="xs:token" minOccurs="0"></xs:element>
+      <xs:element name="gift" type="xs:boolean" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Distance">
+    <xs:simpleContent>
+      <xs:extension base="xs:double">
+        <xs:attribute name="unit" type="xs:string"></xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Condition">
+    <xs:sequence>
+      <xs:element name="conditionId" type="xs:int" maxOccurs="1" minOccurs="0"></xs:element>
+      <xs:element name="conditionDisplayName" type="xs:string" maxOccurs="1" minOccurs="1"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DiscountPriceInfo">
+    <xs:sequence>
+      <xs:element name="originalRetailPrice" type="Amount"></xs:element>
+      <xs:element name="minimunAdvertisedPriceExposure" type="MapExposureEnum" minOccurs="0"></xs:element>
+      <xs:element name="pricingTreatment" type="PriceTreatmentEnum" minOccurs="0"></xs:element>
+      <xs:element name="soldOnEbay" type="xs:boolean" minOccurs="0" default="false"></xs:element>
+      <xs:element name="soldOffEbay" type="xs:boolean" minOccurs="0" default="false"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="MapExposureEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PreCheckout"></xs:enumeration>
+      <xs:enumeration value="DuringCheckout"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PriceTreatmentEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="STP"></xs:enumeration>
+      <xs:enumeration value="MAP"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="UnitPriceInfo">
+    <xs:sequence>
+      <xs:element name="type" type="xs:string"></xs:element>
+      <xs:element name="quantity" type="xs:double"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  
+  
+</xs:schema>
