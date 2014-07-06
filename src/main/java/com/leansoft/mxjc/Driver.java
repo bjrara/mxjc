@@ -502,6 +502,11 @@ public class Driver {
             	return 1;
             }
             
+            if(args[i].equals("-soa")){
+            	module = ModuleName.SOA;
+            	return 1;
+            }
+            
             if (args[i].equals("-pico")) {
             	module = ModuleName.PICO;
             	return 1;

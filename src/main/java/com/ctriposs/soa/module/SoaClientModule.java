@@ -1,9 +1,11 @@
 package com.ctriposs.soa.module;
 
+import java.io.File;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.leansoft.mxjc.builder.ClassModelBuilder;
 import com.leansoft.mxjc.model.CGConfig;
 import com.leansoft.mxjc.model.CGModel;
 import com.leansoft.mxjc.model.ClassInfo;
@@ -24,8 +26,7 @@ public class SoaClientModule extends AbstractClientModule {
 	private URL clzImplTempalte;
 	private URL enumDeclarationTemplate;
 	private URL enumDefinitionTemplate;
-
-//	private URL commonHeaderTemplate;
+	private URL commonHeaderTemplate;
 
 	@Override
 	public ModuleName getName() {
@@ -44,7 +45,7 @@ public class SoaClientModule extends AbstractClientModule {
 		clzImplTempalte = this.getTemplateURL("client-class-implementation.fmt");
 		enumDeclarationTemplate = this.getTemplateURL("client-enum-declaration.fmt");
 		enumDefinitionTemplate = this.getTemplateURL("client-enum-definition.fmt");
-//		commonHeaderTemplate = this.getTemplateURL("client-common-header.fmt");
+		commonHeaderTemplate = this.getTemplateURL("client-common-header.fmt");
 	}
 
 	@Override
@@ -93,6 +94,10 @@ public class SoaClientModule extends AbstractClientModule {
 		if (relativePath == null) {
 			relativePath = "";
 		}
+		relativePath += File.pathSeparator + "common";
+		String commonTypeFileName = prefix + "CommonTypes";
+		FileInfo commonHeader = this.generateFile(commonHeaderTemplate, fmModel, commonTypeFileName, "h", relativePath);
+		targetFileSet.add(commonHeader);
 
 		return targetFileSet;
 	}
@@ -193,8 +198,7 @@ public class SoaClientModule extends AbstractClientModule {
 	protected URL getTemplateURL(String template) throws XjcModuleException {
 		URL url = SoaClientModule.class.getResource("template/" + template);
 		if (url == null) {
-			throw new XjcModuleException("Fail to load required template file : "
-					+ template);
+			throw new XjcModuleException("Fail to load required template file : " + template);
 		}
 		debug("SoaClientModule get template : " + url.toString());
 		return url;
