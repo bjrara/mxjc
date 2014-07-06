@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.leansoft.mxjc.builder.ClassModelBuilder;
 import com.leansoft.mxjc.model.CGConfig;
 import com.leansoft.mxjc.model.CGModel;
 import com.leansoft.mxjc.model.ClassInfo;
@@ -134,18 +133,27 @@ public class SoaClientModule extends AbstractClientModule {
 	private void convertType(TypeInfo fieldType) {
 		if (fieldType == null)
 			return;
-		String primitiveType = OCTypeMapper.lookupWrapper(fieldType.getFullName());
-		if (primitiveType != null) {
-			fieldType.setFullName(OCTypeMapper.lookupWrapper(primitiveType));
-			fieldType.setName(primitiveType);
+		String type = OCTypeMapper.lookupPrimitive(fieldType.getFullName());
+		if (type != null) {
+			fieldType.setFullName(OCTypeMapper.lookupPrimitive(type));
+			fieldType.setName(type);
 			fieldType.setPrimitive(true);
+			return;
+		}
+		type = OCTypeMapper.lookupWrapper(fieldType.getFullName());
+		if (type != null) {
+			//TODO seperate 2-level mapping structure
+			fieldType.setFullName(OCTypeMapper.lookupWrapper(type));
+			fieldType.setName(type);
+			fieldType.setPrimitive(true);
+			fieldType.setWrapper(true);
 			return;
 		} else if (fieldType.isEnum()) {
 			fieldType.setName(PicoType.ENUM);
 			fieldType.setPrimitive(true);
 			return;
 		}
-		//TODO add fieldtype name
+		fieldType.setName(PicoType.OBJECT);
 		fieldType.setPrimitive(false);
 	}
 
@@ -186,7 +194,7 @@ public class SoaClientModule extends AbstractClientModule {
 	private void prefixType(TypeInfo type, String prefix) {
 		if (type == null)
 			return;
-		if (OCTypeMapper.lookupWrapper(type.getFullName()) != null) {
+		if (OCTypeMapper.lookupPrimitive(type.getFullName()) != null) {
 			return;
 		}
 		String name = type.getName();

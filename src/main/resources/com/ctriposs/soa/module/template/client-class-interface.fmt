@@ -27,7 +27,9 @@
 
 @private
 [#list clazz.fields as field]
-[#if field.type.collection]
+[#if field.type.primitive]
+	${field.type.fullName} _${field.name};
+[#elseif field.type.collection]
     NSArray *_${field.name};
 [#elseif field.type.enum]
     ${field.type.fullName} *_${field.name};

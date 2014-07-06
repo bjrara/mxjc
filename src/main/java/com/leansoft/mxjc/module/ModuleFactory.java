@@ -1,5 +1,6 @@
 package com.leansoft.mxjc.module;
 
+import com.ctriposs.soa.module.SoaClientModule;
 import com.leansoft.mxjc.module.nano.NanoClientModule;
 import com.leansoft.mxjc.module.pico.PicoClientModule;
 
@@ -11,6 +12,8 @@ public class ModuleFactory {
 			module = new NanoClientModule();
 		} else if (name == ModuleName.PICO) {
 			module = new PicoClientModule();
+		} else if (name == ModuleName.SOA){
+			module = new SoaClientModule();
 		}
 		return module;
 	}
