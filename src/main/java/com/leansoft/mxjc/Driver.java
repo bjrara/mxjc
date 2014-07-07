@@ -358,6 +358,7 @@ public class Driver {
                         
                         CGConfig cgConfig = new CGConfig();
                         cgConfig.picoPrefix = opt.prefix;
+                        cgConfig.soaPrefix = opt.prefix;
                         cgConfig.nanoPrivateField = opt.privateField;
 						files = clientModule.generate(cgModel, cgConfig);
 					} catch (XjcModuleException e1) {

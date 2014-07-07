@@ -104,8 +104,16 @@ public class SoaClientModule extends AbstractClientModule {
 	private Object getFieldImports(ClassInfo classInfo) {
 		Set<String> imports = new HashSet<String>();
 		for (FieldInfo fieldInfo : classInfo.getFields()) {
-			TypeInfo fieldClassType = fieldInfo.getType();
-			imports.add(fieldClassType.getFullName());
+			TypeInfo fieldType = fieldInfo.getType();
+			if (fieldType.isArray()) {
+				TypeInfo elementType = fieldType.getElementType();
+				if (elementType != null && !elementType.isPrimitive() && !elementType.isEnum()) {
+					imports.add(elementType.getFullName());
+				}
+			}
+			if (!fieldType.isPrimitive() && !fieldType.isEnum() && !fieldType.isCollection()) {
+				imports.add(fieldType.getFullName());
+			}
 		}
 		return imports;
 	}
@@ -166,7 +174,7 @@ public class SoaClientModule extends AbstractClientModule {
 		}
 
 		for (EnumInfo enumInfo : cgModel.getEnums()) {
-			enumInfo.setDocComment(prefix + enumInfo.getName());
+			enumInfo.setName(prefix + enumInfo.getName());
 			String fullName = enumInfo.getPackageName() + "." + enumInfo.getName();
 			enumInfo.setFullName(fullName);
 		}

@@ -23,7 +23,7 @@
  @ingroup ${group}
  [/#if]
 */
-@interface ${clazz.name} : [#if clazz.superClass??]${clazz.superClass.name}[#else]NSObject <PicoBindable>[/#if] {
+@interface ${clazz.name} : [#if clazz.superClass??]${clazz.superClass.name}[#else]NSObject[/#if] {
 
 @private
 [#list clazz.fields as field]
