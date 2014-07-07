@@ -15,12 +15,10 @@
  [/#if]
 */
 [/#if]
-  [#list enum.enumConstants as constant]
+typedef enum{
+	[#list enum.enumConstants as constant]
+	 ${enum.name}${constant.name},
+	[/#list]
+} ${enum.name};
 
-  [#if constant.docComment??]
-/**
- ${constant.docComment?replace("\n", "\n ")?replace("\t", "")}
-*/
-  [/#if]
-extern NSString *const ${enum.name}_${constant.name};
-  [/#list]
+#define ${enum.name}Array [#list enum.enumConstants as constant]@"${constant.value}",[/#list] nil

@@ -5,18 +5,15 @@
 
 #import "${enum.name}.h"
 
-[#if enum.docComment??]
-/**
- @file
- ${enum.docComment?chop_linebreak?replace("\n", "\n ")?replace("\t", "")}
-*/
-[/#if]
-  [#list enum.enumConstants as constant]
+-(NSString*) stringFromEnum:(${enum.name})enumVal
+{
+    NSArray *${enum.name}Array = [[NSArray alloc] initWithObjects:${enum.name}Array];
+    return [${enum.name}Array objectAtIndex:enumVal];
+}
 
-  [#if constant.docComment??]
-/**
- ${constant.docComment?replace("\n", "\n ")?replace("\t", "")}
-*/
-  [/#if]
-NSString *const ${enum.name}_${constant.name} = @"${constant.value}";
-  [/#list]
+-(${enum.name}) enumFromString:(NSString*)strVal
+{
+    NSArray *${enum.name}Array = [[NSArray alloc] initWithObjects:${enum.name}Array];
+    NSUInteger obj = [${enum.name}Array indexOfObject:strVal];
+    return (${enum.name}) obj;
+}
