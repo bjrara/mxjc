@@ -148,7 +148,7 @@ public class SoaClientModule extends AbstractClientModule {
 			fieldType.setPrimitive(true);
 			return;
 		}
-		type = OCTypeMapper.lookupWrapper(fieldType.getFullName());
+		type = OCTypeMapper.lookupNonPrimitive(fieldType.getFullName());
 		if (type != null && !type.isEmpty()) {
 			//TODO seperate 2-level mapping structure
 			fieldType.setFullName(type);
@@ -203,7 +203,7 @@ public class SoaClientModule extends AbstractClientModule {
 		if (type == null)
 			return;
 		if (OCTypeMapper.lookupPrimitive(type.getFullName()) != null ||
-				OCTypeMapper.lookupWrapper(type.getFullName()) != null) {
+				OCTypeMapper.lookupNonPrimitive(type.getFullName()) != null) {
 			return;
 		}
 		String name = type.getName();
