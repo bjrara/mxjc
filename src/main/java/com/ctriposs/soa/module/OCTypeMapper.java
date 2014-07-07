@@ -1,39 +1,62 @@
 package com.ctriposs.soa.module;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.datatype.Duration;
+import javax.xml.namespace.QName;
 
 import com.leansoft.mxjc.module.pico.PicoType;
 
 public class OCTypeMapper {
-	private static Map<String, String> mapping;
+	private static Map<String, String> primitiveMap;
+	private static Map<String, String> wrapperMap;
 
 	static {
-		initMapping();
+		initPrimitiveMap();
+		initWrapperMap();
 	}
 
-	private static void initMapping() {
-		mapping = new HashMap<String, String>();
+	private static void initPrimitiveMap() {
+		primitiveMap = new HashMap<String, String>();
 
-		mapping.put(PicoType.INTEGER, SoaOCWrapper.INT);
-		mapping.put(PicoType.BOOL, SoaOCWrapper.BOOL);
-		mapping.put(PicoType.BYTE, SoaOCWrapper.BYTE);
-		mapping.put(PicoType.CHAR, SoaOCWrapper.CHAR);
-		mapping.put(PicoType.SHORT, SoaOCWrapper.SHORT);
-		mapping.put(PicoType.LONG, SoaOCWrapper.LONG);
-		mapping.put(PicoType.FLOAT, SoaOCWrapper.FLOAT);
-		mapping.put(PicoType.DOUBLE, SoaOCWrapper.DOUBLE);
-		mapping.put(PicoType.ENUM, SoaOCWrapper.ENUM);
-		mapping.put(PicoType.DATE, SoaOCWrapper.NSDATE);
-		mapping.put(PicoType.STRING, SoaOCWrapper.NSSTRING);
-		mapping.put(PicoType.DATA, SoaOCWrapper.NSDATA);
-		mapping.put(PicoType.QNAME, SoaOCWrapper.NSSTRING);
+		primitiveMap.put(int.class.getName(), SoaOCWrapper.INT);
+		primitiveMap.put(boolean.class.getName(), SoaOCWrapper.BOOL);
+		primitiveMap.put(byte.class.getName(), SoaOCWrapper.BYTE);
+		primitiveMap.put(char.class.getName(), SoaOCWrapper.CHAR);
+		primitiveMap.put(short.class.getName(), SoaOCWrapper.SHORT);
+		primitiveMap.put(long.class.getName(), SoaOCWrapper.LONG);
+		primitiveMap.put(float.class.getName(), SoaOCWrapper.FLOAT);
+		primitiveMap.put(double.class.getName(), SoaOCWrapper.DOUBLE);
 	}
 
-	public static String lookupWrapper(String primType) {
-		return mapping.get(primType);
+	private static void initWrapperMap() {
+		wrapperMap = new HashMap<String, String>();
+
+		wrapperMap.put(Integer.class.getName(), SoaOCWrapper.NSNUMBER);
+		wrapperMap.put(Boolean.class.getName(), SoaOCWrapper.NSNUMBER);
+		wrapperMap.put(Byte.class.getName(), SoaOCWrapper.NSNUMBER);
+		wrapperMap.put(Character.class.getName(), SoaOCWrapper.NSNUMBER);
+		wrapperMap.put(Short.class.getName(), SoaOCWrapper.NSNUMBER);
+		wrapperMap.put(Long.class.getName(), SoaOCWrapper.NSNUMBER);
+		wrapperMap.put(Float.class.getName(), SoaOCWrapper.NSNUMBER);
+		wrapperMap.put(Double.class.getName(), SoaOCWrapper.NSNUMBER);
+		wrapperMap.put(Date.class.getName(), SoaOCWrapper.NSDATE);
+		wrapperMap.put(String.class.getName(), SoaOCWrapper.NSSTRING);
+		wrapperMap.put("byte[]", SoaOCWrapper.NSDATA);
+		wrapperMap.put(QName.class.getName(), SoaOCWrapper.NSSTRING);
+		wrapperMap.put(Duration.class.getName(), SoaOCWrapper.NSSTRING);
 	}
-	
+
+	public static String lookupPrimitive(String javaType) {
+		return primitiveMap.get(javaType);
+	}
+
+	public static String lookupWrapper(String javaType) {
+		return wrapperMap.get(javaType);
+	}
+
 	public class SoaOCWrapper {
 		public static final String INT = "int";
 		public static final String BOOL = "BOOL";

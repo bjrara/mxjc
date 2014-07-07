@@ -28,7 +28,11 @@
 @private
 [#list clazz.fields as field]
 [#if field.type.primitive]
+	[#if field.type.wrapper]
+	${field.type.fullName} *_${field.name};
+	[#else]
 	${field.type.fullName} _${field.name};
+	[/#if]
 [#elseif field.type.collection]
     NSArray *_${field.name};
 [#elseif field.type.enum]
@@ -50,44 +54,15 @@
 [#list clazz.fields as field]
 [#if field.type.collection]
   	[#assign type = field.type.typeParameters?first]
-/**
- ${field.docComment?default("(public property)")?replace("\n", "\n ")?replace("\t", "")}
- 
- [#if type.enum]
- entry type : string constant in ${type.fullName}.h
- [#elseif type.primitive]
- entry type : ${type.fullName}, wrapper for primitive ${getPrimitiveTypeName(type.name)}
- [#else]
- entry type : class ${type.fullName}
- [/#if]
-*/
-
 @property (nonatomic, retain) NSMutableArray *${field.name};
 [#elseif field.type.enum]
-/**
- ${field.docComment?default("(public property)")?replace("\n", "\n ")?replace("\t", "")}
- 
- type: string constant in ${field.type.fullName}.h
-*/
-@property (nonatomic, retain) NSString *${field.name};
-[#elseif field.any]
-/**
- ${field.docComment?default("(public property)")?replace("\n", "\n ")?replace("\t", "")}
- 
- entry type : ${field.type.fullName}, wrapper for primitive ${getPrimitiveTypeName(field.type.name)}
-*/
 @property (nonatomic, retain) NSMutableArray *${field.name};
-[#else]
-/**
- ${field.docComment?default("(public property)")?replace("\n", "\n ")?replace("\t", "")}
- 
- [#if field.type.primitive]
- type : ${field.type.fullName}, wrapper for primitive ${getPrimitiveTypeName(field.type.name)}
- [#else]
- type : class ${field.type.fullName}
- [/#if]
-*/
+[#elseif field.type.primitive]
+	[#if field.type.wrapper]
 @property (nonatomic, retain) ${field.type.fullName} *${field.name};
+	[#else]
+@property (nonatomic, retain) ${field.type.fullName} ${field.name};
+	[/#if]
 [/#if]
 
 [/#list]
