@@ -5,15 +5,33 @@
 
 #import "${enum.name}.h"
 
--(NSString*) stringFromEnum:(${enum.name})enumVal
+@implementation ${enum.name}Helper
++ (NSDictionary *)enumDic
 {
-    NSArray *${enum.name}Array = [[NSArray alloc] initWithObjects:${enum.name}Array];
-    return [${enum.name}Array objectAtIndex:enumVal];
+	return @{[#list enum.enumConstants as constant]
+			@(${enum.name}${constant.name}):@"${constant.value}",
+			[/#list]};
 }
 
--(${enum.name}) enumFromString:(NSString*)strVal
++ (NSString *)stringWithEnum:(${enum.name})enumVal
 {
-    NSArray *${enum.name}Array = [[NSArray alloc] initWithObjects:${enum.name}Array];
-    NSUInteger *obj = [${enum.name}Array indexOfObject:strVal];
-    return (${enum.name}) obj;
+	return [[${enum.name}Helper enumDic]objectForKey:@(enumVal)];
 }
+
++ (${enum.name})enumFromString:(NSString *)strVal
+{
+	NSDictionary *enumDic = [${enum.name}Helper enumDic];
+    NSEnumerator* keyEnum = [enumDic keyEnumerator];
+    id key;
+    while((key =[keyEnum nextObject]) != nil){
+        id value = [enumDic objectForKey:key];
+        if([value isKindOfClass:[NSString class]]){
+            if([(NSString *)value isEqual:strVal]){
+                return (${enum.name})[key intValue];
+            }
+        }
+    }
+    [NSException raise:NSGenericException format:@"Unexpected enum value."];
+    return nil;
+}
+@end

@@ -17,7 +17,14 @@
 
 -(void)dealloc {
 [#list clazz.fields as field]
-    self.${field.name} = nil;
+[#if field.type.primitive]
+	[#if field.type.wrapper]
+    [_${field.name} release];
+    [/#if]
+[#elseif field.type.enum]
+[#else]
+	[_${field.name} release];
+[/#if]
 [/#list]
     [super dealloc];
 }

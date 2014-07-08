@@ -16,6 +16,9 @@
 @class ${import};
 [/#list]
 
+[#list fieldFileImports as import]
+#import "${import}.h"
+[/#list]
 /**
  ${clazz.docComment?default("(public class)")?replace("\n", "\n ")?replace("\t", "")}
  
@@ -36,7 +39,7 @@
 [#elseif field.type.collection]
     NSArray *_${field.name};
 [#elseif field.type.enum]
-    ${field.type.fullName} *_${field.name};
+    ${field.type.fullName} _${field.name};
 [#elseif field.any]
     NSArray *_${field.name};
 [#else]
@@ -54,15 +57,17 @@
 [#list clazz.fields as field]
 [#if field.type.collection]
   	[#assign type = field.type.typeParameters?first]
-@property (nonatomic, retain) NSMutableArray *${field.name};
+@property (nonatomic, retain) NSArray *${field.name};
 [#elseif field.type.enum]
-@property (nonatomic, retain) NSMutableArray *${field.name};
+@property (nonatomic) ${field.type.fullName} ${field.name};
 [#elseif field.type.primitive]
 	[#if field.type.wrapper]
 @property (nonatomic, retain) ${field.type.fullName} *${field.name};
 	[#else]
-@property (nonatomic, retain) ${field.type.fullName} ${field.name};
+@property (nonatomic) ${field.type.fullName} ${field.name};
 	[/#if]
+[#else]
+@property (nonatomic, retain) ${field.type.fullName} *${field.name};
 [/#if]
 
 [/#list]

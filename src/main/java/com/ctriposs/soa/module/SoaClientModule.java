@@ -66,6 +66,7 @@ public class SoaClientModule extends AbstractClientModule {
 			convertFieldsType(classInfo);
 			fmModel.put("superClassImports", getSuperClassImports(classInfo));
 			fmModel.put("fieldClassImports", getFieldImports(classInfo));
+			fmModel.put("fieldFileImports", getFieldFileImports(classInfo));
 			fmModel.put("clazz", classInfo);
 
 			relativePath = ClassNameUtil.packageNameToPath(classInfo.getPackageName());
@@ -101,6 +102,23 @@ public class SoaClientModule extends AbstractClientModule {
 		return targetFileSet;
 	}
 
+	private Object getFieldFileImports(ClassInfo classInfo) {
+		Set<String> imports = new HashSet<String>();
+		for (FieldInfo fieldInfo : classInfo.getFields()) {
+			TypeInfo fieldType = fieldInfo.getType();
+			if (fieldType.isArray()) {
+				TypeInfo elementType = fieldType.getElementType();
+				if (elementType.isEnum()) {
+					imports.add(elementType.getFullName());
+				}
+			}
+			if (fieldType.isEnum()) {
+				imports.add(fieldType.getFullName());
+			}
+		}
+		return imports;
+	}
+
 	private Object getFieldImports(ClassInfo classInfo) {
 		Set<String> imports = new HashSet<String>();
 		for (FieldInfo fieldInfo : classInfo.getFields()) {
@@ -111,7 +129,7 @@ public class SoaClientModule extends AbstractClientModule {
 					imports.add(elementType.getFullName());
 				}
 			}
-			if (!fieldType.isPrimitive() && !fieldType.isEnum() && !fieldType.isCollection()) {
+			if (!fieldType.isPrimitive() && !fieldType.isCollection() && !fieldType.isEnum()) {
 				imports.add(fieldType.getFullName());
 			}
 		}
@@ -158,7 +176,6 @@ public class SoaClientModule extends AbstractClientModule {
 			return;
 		} else if (fieldType.isEnum()) {
 			fieldType.setName(PicoType.ENUM);
-			fieldType.setPrimitive(true);
 			return;
 		}
 		fieldType.setName(PicoType.OBJECT);
@@ -202,8 +219,8 @@ public class SoaClientModule extends AbstractClientModule {
 	private void prefixType(TypeInfo type, String prefix) {
 		if (type == null)
 			return;
-		if (OCTypeMapper.lookupPrimitive(type.getFullName()) != null ||
-				OCTypeMapper.lookupNonPrimitive(type.getFullName()) != null) {
+		if (OCTypeMapper.lookupPrimitive(type.getFullName()) != null
+				|| OCTypeMapper.lookupNonPrimitive(type.getFullName()) != null) {
 			return;
 		}
 		String name = type.getName();
