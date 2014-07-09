@@ -183,7 +183,6 @@ public class SoaClientModule extends AbstractClientModule {
 	}
 
 	private void prefixType(CGModel cgModel, String prefix) {
-		//TODO use interface
 		for (ClassInfo classInfo : cgModel.getClasses()) {
 			classInfo.setName(prefix + classInfo.getName());
 			String fullName = classInfo.getPackageName() + "." + classInfo.getName();

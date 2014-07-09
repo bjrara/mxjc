@@ -23,6 +23,7 @@ public class TypeInfo implements Serializable {
 	// is this a primitive type
 	private boolean isPrimitive = false;
 	
+	// is this a wrapper of primitive type (like Integer or Boolean)
 	private boolean isWrapper = false;
 	
 	// is this an enum type
@@ -100,7 +101,11 @@ public class TypeInfo implements Serializable {
 	public boolean isPrimitive() {
 		return isPrimitive;
 	}
-	
+
+	/**
+	 * whether this is a wrapper of primitive type
+	 * @return whether this is a wrapper of primitive type
+	 */
 	public boolean isWrapper(){
 		return isWrapper;
 	}
@@ -112,7 +117,11 @@ public class TypeInfo implements Serializable {
 	public void setPrimitive(boolean isPrimitive) {
 		this.isPrimitive = isPrimitive;
 	}
-	
+
+	/**
+	 * set whether this is a wrapper of primitive type
+	 * @param isWrapper
+	 */
 	public void setWrapper(boolean isWrapper){
 		this.isWrapper = isWrapper;
 	}
