@@ -4,6 +4,7 @@
 // DO NOT CHANGE!
 
 #import <Foundation/Foundation.h>
+#import "PicoBindable.h"
 [#list superClassImports as import]
 #import "${import}.h"
 [/#list]
@@ -26,7 +27,7 @@
  @ingroup ${group}
  [/#if]
 */
-@interface ${clazz.name} : [#if clazz.superClass??]${clazz.superClass.name}[#else]NSObject[/#if] {
+@interface ${clazz.name} : [#if clazz.superClass??]${clazz.superClass.name}[#else]NSObject<PicoBindable>[/#if] {
 
 @private
 [#list clazz.fields as field]
