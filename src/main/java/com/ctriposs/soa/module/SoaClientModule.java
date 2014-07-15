@@ -16,6 +16,7 @@ import com.leansoft.mxjc.module.AbstractClientModule;
 import com.leansoft.mxjc.module.ModuleName;
 import com.leansoft.mxjc.module.XjcModuleException;
 import com.leansoft.mxjc.module.pico.PicoType;
+import com.leansoft.mxjc.module.pico.PicoTypeMapper;
 import com.leansoft.mxjc.util.ClassNameUtil;
 
 import freemarker.template.SimpleHash;
@@ -132,6 +133,11 @@ public class SoaClientModule extends AbstractClientModule {
 			if (!fieldType.isPrimitive() && !fieldType.isCollection() && !fieldType.isEnum()) {
 				imports.add(fieldType.getFullName());
 			}
+			for(TypeInfo paraType : fieldType.getTypeParameters()) { // object type
+				if (!paraType.isPrimitive() && !paraType.isEnum() && !fieldInfo.isAny()) {
+					imports.add(paraType.getFullName());
+				}
+			}
 		}
 		return imports;
 	}
@@ -159,22 +165,22 @@ public class SoaClientModule extends AbstractClientModule {
 	private void convertType(TypeInfo fieldType) {
 		if (fieldType == null)
 			return;
-		String type = OCTypeMapper.lookupPrimitive(fieldType.getFullName());
+		String type = SoaJava2PicoTypeMapper.lookupPrimitivePicoType(fieldType.getFullName());
 		if (type != null && !type.isEmpty()) {
-			fieldType.setFullName(type);
+			fieldType.setFullName(SoaPicoTypeMapper.lookupWrapper(type));
 			fieldType.setName(type);
 			fieldType.setPrimitive(true);
 			return;
 		}
-		type = OCTypeMapper.lookupNonPrimitive(fieldType.getFullName());
+		type = SoaJava2PicoTypeMapper.lookupNonPrimitivePicoType(fieldType.getFullName());
 		if (type != null && !type.isEmpty()) {
-			//TODO seperate 2-level mapping structure
-			fieldType.setFullName(type);
+			fieldType.setFullName(SoaPicoTypeMapper.lookupWrapper(type));
 			fieldType.setName(type);
 			fieldType.setPrimitive(true);
 			fieldType.setWrapper(true);
 			return;
 		} else if (fieldType.isEnum()) {
+			fieldType.setPrimitive(true);
 			fieldType.setName(PicoType.ENUM);
 			return;
 		}
@@ -218,8 +224,8 @@ public class SoaClientModule extends AbstractClientModule {
 	private void prefixType(TypeInfo type, String prefix) {
 		if (type == null)
 			return;
-		if (OCTypeMapper.lookupPrimitive(type.getFullName()) != null
-				|| OCTypeMapper.lookupNonPrimitive(type.getFullName()) != null) {
+		if (SoaJava2PicoTypeMapper.lookupPrimitivePicoType(type.getFullName()) != null
+				|| SoaJava2PicoTypeMapper.lookupNonPrimitivePicoType(type.getFullName()) != null) {
 			return;
 		}
 		String name = type.getName();

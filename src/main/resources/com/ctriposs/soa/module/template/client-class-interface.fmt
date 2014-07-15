@@ -27,29 +27,7 @@
  @ingroup ${group}
  [/#if]
 */
-@interface ${clazz.name} : [#if clazz.superClass??]${clazz.superClass.name}[#else]NSObject<PicoBindable>[/#if] {
-
-@private
-[#list clazz.fields as field]
-[#if field.type.primitive]
-	[#if field.type.wrapper]
-	${field.type.fullName} *_${field.name};
-	[#else]
-	${field.type.fullName} _${field.name};
-	[/#if]
-[#elseif field.type.collection]
-    NSArray *_${field.name};
-[#elseif field.type.enum]
-    ${field.type.fullName} _${field.name};
-[#elseif field.any]
-    NSArray *_${field.name};
-[#else]
-    ${field.type.fullName} *_${field.name};
-[/#if]
-[/#list]
-
-}
-
+@interface ${clazz.name} : [#if clazz.superClass??]${clazz.superClass.name}[#else]NSObject<PicoBindable>[/#if]
 [#function getPrimitiveTypeName type]
   [#assign index = type?last_index_of("_") ]
   [#return type?substring(index + 1)?lower_case]
@@ -72,5 +50,4 @@
 [/#if]
 
 [/#list]
-
 @end

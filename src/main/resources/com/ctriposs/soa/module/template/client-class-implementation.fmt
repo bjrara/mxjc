@@ -20,7 +20,7 @@
 
 // class meta-data method
 // note: this method is only for internal use, DO NOT CHANGE!
-+(PicoClassSchema *)getClassMetaData {
++ (PicoClassSchema *)getClassMetaData {
 [#if clazz.rootElementAnnotation?? && clazz.rootElementAnnotation.parameterProvided]
     PicoClassSchema *cs = [[PicoClassSchema alloc] initWithXmlName:@"${clazz.rootElementAnnotation.name}" nsUri:@"${clazz.rootElementAnnotation.namespace}"];
     [cs autorelease];
@@ -32,7 +32,7 @@
 
 // property meta-data method
 // note: this method is only for internal use, DO NOT CHANGE!
-+(NSMutableDictionary *)getPropertyMetaData {
++ (NSMutableDictionary *)getPropertyMetaData {
     NSMutableDictionary *map = [OrderedDictionary dictionary];
     [#assign flag=false]
     
@@ -97,7 +97,7 @@
     return map;
 }
 
--(void)dealloc {
+- (void)dealloc {
 [#list clazz.fields as field]
 [#if field.type.primitive]
 	[#if field.type.wrapper]

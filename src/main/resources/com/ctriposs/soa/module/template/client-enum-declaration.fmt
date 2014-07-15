@@ -22,6 +22,9 @@ typedef enum{
 } ${enum.name};
 
 @interface ${enum.name}Helper:NSObject
+
 + (NSString *)stringWithEnum:(${enum.name})enumVal;
+
 + (${enum.name})enumFromString:(NSString *)strVal;
+
 @end

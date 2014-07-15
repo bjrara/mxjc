@@ -28,6 +28,8 @@ public abstract class PicoType {
 	
 	public static final String DOUBLE = PICO_PREFIX + "DOUBLE";
 	
+	public static final String NUMBER = PICO_PREFIX + "NUMBER";
+	
 	public static final String STRING = PICO_PREFIX + "STRING";
 	
 	public static final String ENUM = PICO_PREFIX + "ENUM";
