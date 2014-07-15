@@ -4,6 +4,7 @@
 // DO NOT CHANGE!
 
 #import <Foundation/Foundation.h>
+#import "PicoTextualizable.h"
 
 [#if enum.docComment??]
 /**
@@ -21,7 +22,7 @@ typedef enum{
 	[/#list]
 } ${enum.name};
 
-@interface ${enum.name}Helper:NSObject
+@interface ${enum.name}Helper:NSObject <PicoTextualizable>
 
 + (NSString *)stringWithEnum:(${enum.name})enumVal;
 

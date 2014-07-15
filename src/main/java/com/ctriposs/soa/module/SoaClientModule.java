@@ -180,7 +180,6 @@ public class SoaClientModule extends AbstractClientModule {
 			fieldType.setWrapper(true);
 			return;
 		} else if (fieldType.isEnum()) {
-			fieldType.setPrimitive(true);
 			fieldType.setName(PicoType.ENUM);
 			return;
 		}

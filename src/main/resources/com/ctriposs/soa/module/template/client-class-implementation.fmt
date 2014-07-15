@@ -48,7 +48,7 @@
 	     [#assign flag=true]
     PicoPropertySchema *ps = nil;
 	  [/#if]
-    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_ATTRIBUTE xmlName:@"${xmlName}" propertyName:@"${field.name}" type:${field.type.name} clazz:[#if !field.type.primitive][${field.type.fullName} class][#else]nil[/#if]];
+    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_ATTRIBUTE xmlName:@"${xmlName}" propertyName:@"${field.name}" type:${field.type.name} clazz:[#if field.type.enum][${field.type.fullName}Helper class][#elseif !field.type.primitive][${field.type.fullName} class][#else]nil[/#if]];
     [map setObject:ps forKey:@"${field.name}"];
     [ps release];
 	[#elseif field.element][#-- map to xml element --]
@@ -58,7 +58,7 @@
 	            [#assign flag=true]
     PicoPropertySchema *ps = nil;
 	        [/#if]
-    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_ELEMENT_ARRAY xmlName:@"${xmlName}" propertyName:@"${field.name}" type:${type.name} clazz:[#if !type.primitive][${type.fullName} class][#else]nil[/#if]];
+    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_ELEMENT_ARRAY xmlName:@"${xmlName}" propertyName:@"${field.name}" type:${type.name} clazz:[#if type.enum][${type.fullName}Helper class[#elseif !type.primitive][${type.fullName} class][#else]nil[/#if]];
     [map setObject:ps forKey:@"${field.name}"];
     [ps release];
 	    [#else]
@@ -66,7 +66,7 @@
 	            [#assign flag=true]
     PicoPropertySchema *ps = nil;
 	        [/#if]
-    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_ELEMENT xmlName:@"${xmlName}" propertyName:@"${field.name}" type:${field.type.name} clazz:[#if !field.type.primitive][${field.type.fullName} class][#else]nil[/#if]];
+    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_ELEMENT xmlName:@"${xmlName}" propertyName:@"${field.name}" type:${field.type.name} clazz:[#if field.type.enum][${field.type.fullName}Helper class][#elseif !field.type.primitive][${field.type.fullName} class][#else]nil[/#if]];
     [map setObject:ps forKey:@"${field.name}"];
     [ps release];
 	    [/#if]
@@ -75,7 +75,7 @@
 	        [#assign flag=true]
     PicoPropertySchema *ps = nil;
 	    [/#if]
-    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_VALUE xmlName:nil propertyName:@"${field.name}" type:${field.type.name} clazz:[#if !field.type.primitive][${field.type.fullName} class][#else]nil[/#if]];
+    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_VALUE xmlName:nil propertyName:@"${field.name}" type:${field.type.name} clazz:[#if field.type.enum][${field.type.fullName}Helper class][#elseif !field.type.primitive][${field.type.fullName} class][#else]nil[/#if]];
     [map setObject:ps forKey:@"${field.name}"];
     [ps release];
     [#else][#-- map to xml any --]
@@ -88,7 +88,7 @@
 	    [#else]
 	        [#assign type = field.type]
 	    [/#if]
-    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_ANY_ELEMENT xmlName:@"${xmlName}" propertyName:@"${field.name}" type:${type.name} clazz:[#if !type.primitive][${type.fullName} class][#else]nil[/#if]];
+    ps = [[PicoPropertySchema alloc] initWithKind:PICO_KIND_ANY_ELEMENT xmlName:@"${xmlName}" propertyName:@"${field.name}" type:${type.name} clazz:[#if field.type.enum][${field.type.fullName}Helper class][#elseif !type.primitive][${type.fullName} class][#else]nil[/#if]];
     [map setObject:ps forKey:@"${field.name}"];
     [ps release];
 	[/#if]                     
